@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import { ServersService } from '../servers.service';
 
@@ -12,6 +12,7 @@ export class EditServerComponent implements OnInit {
   server: {id: number, name: string, status: string};
   serverName = '';
   serverStatus = '';
+  allowEdit = false;
 
   constructor(
     private serversService: ServersService,
@@ -19,7 +20,11 @@ export class EditServerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe();
+    this.route.queryParams.subscribe(
+      (queryParam: Params) => {
+        this.allowEdit = queryParam.allowEdit === '1' ? true : false;
+      }
+    );
     this.route.fragment.subscribe();
     this.server = this.serversService.getServer(1);
     this.serverName = this.server.name;
