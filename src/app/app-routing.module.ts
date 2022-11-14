@@ -10,6 +10,8 @@ import { ServerComponent } from './servers/server/server.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthGuard } from "./auth-guard.service";
 import { CanDeactiveGuard } from "./servers/edit-server/can-deactiveate-guard.service";
+import { ErrorPageComponent } from "./error-page/error-page.component";
+import { ServerResolver } from "./servers/server/server-resolver.service";
 
 const appRoutes: Array<Route> = [
   {
@@ -34,7 +36,8 @@ const appRoutes: Array<Route> = [
     children: [
       {
         path: ':id',
-        component: ServerComponent
+        component: ServerComponent,
+        resolve: { server: ServerResolver }
       },
       {
         path: ':id/edit',
@@ -43,9 +46,16 @@ const appRoutes: Array<Route> = [
       }
     ]
   },
+  // {
+  //   path: '404',
+  //   component: PageNotFoundComponent
+  // },
   {
     path: '404',
-    component: PageNotFoundComponent
+    component: ErrorPageComponent,
+    data: {
+      message: 'Page not found!'
+    }
   },
   {
     path: '**',
